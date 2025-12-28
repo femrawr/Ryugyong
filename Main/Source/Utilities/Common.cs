@@ -1,0 +1,33 @@
+﻿using System.Security.Principal;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace Main.Source.Utilities
+{
+    public class Common
+    {
+        public static List<int> GetLesserCodes(string text)
+        {
+            var codes = new List<int>();
+
+            foreach (char thing in text.ToLower())
+            {
+                if (!char.IsLetter(thing))
+                {
+                    continue;
+                }
+
+                int code = thing - (int)'a' + 1;
+                codes.Add(code);
+            }
+
+            return codes;
+        }
+
+        public static bool IsElevated()
+        {
+            using var inden = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(inden);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+    }
+}

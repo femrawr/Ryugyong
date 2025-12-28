@@ -1,0 +1,7 @@
+@Wiki/
+
+node_modules/
+
+.vs/
+bin/
+obj/
