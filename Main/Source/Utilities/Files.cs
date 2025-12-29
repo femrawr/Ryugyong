@@ -136,8 +136,8 @@ namespace Main.Source.Utilities
 
             while (written < fileSize)
             {
-                int toWrite = (int)Math.Min(buffer.Length, fileSize - written);
-                stream.Write(buffer, 0, toWrite);
+                long toWrite = Math.Min(buffer.Length, fileSize - written);
+                stream.Write(buffer, 0, (int)toWrite);
                 stream.Flush();
 
                 written += toWrite;

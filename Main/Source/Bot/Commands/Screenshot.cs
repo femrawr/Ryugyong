@@ -11,7 +11,7 @@ namespace Main.Source.Bot.Commands
 
         public override async Task Func(SocketCommandContext socket, string[] args)
         {
-            float? scale = 1.0f;
+            float? scale = null;
 
             if (args.Length > 0 && float.TryParse(args[0], out float parsed))
             {
