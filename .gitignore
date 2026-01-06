@@ -1,5 +1,7 @@
 @Wiki/
 
+_build/
+
 node_modules/
 
 .vs/

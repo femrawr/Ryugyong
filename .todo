@@ -1,3 +1,4 @@
+ryu:
 - debug cmd
 - file cmd
 - wallpaper cmd
@@ -5,4 +6,10 @@
 - volume cmd
 - wipe cmd
 - bypass arg for ss
-- builder
+
+builder:
+- features tab ; disable/enabled commands
+- option to encrypt main
+
+dev tools:
+- log reader
