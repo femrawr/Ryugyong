@@ -1,0 +1,144 @@
+{
+    "m-bot": [
+        {
+            "name": "Bot token",
+            "info": "The token of the bot.",
+            "type": "text"
+        },
+        {
+            "name": "Server ID",
+            "info": "The ID of the server that will control the bot.",
+            "type": "text",
+            "attributes": { "type": "number" }
+        },
+        {
+            "name": "Category ID",
+            "info": "The ID of the category each session will be controlled in.",
+            "type": "text",
+            "attributes": { "type": "number" }
+        },
+        {
+            "name": "Command prefix",
+            "info": "The prefix of commands.",
+            "type": "text",
+            "attributes": { "maxlength": 1 },
+            "value": "."
+        }
+    ],
+    "m-options": [
+        {
+            "name": "Require admin",
+            "info": "Requires Ryugyong to have admin privileges to run.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Prompt admin",
+            "info": "Triggers the User Account Control prompt to run Ryugyong as admin.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Force admin",
+            "info": "Continuously triggers the User Account Control prompt until the user accepts.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Continue without admin",
+            "info": "If the user declines the Account Control prompt while \"Require admin\" is enabled, Ryugyong will still run.",
+            "type": "checkbox"
+        },
+        {
+            "type": "separator"
+        },
+        {
+            "name": "Use mutex",
+            "info": "Whether to use a mutex to ensure only 1 instance of Ryugyong is running.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Mutex name",
+            "info": "The name of the mutex. If one is not provided, a random one will be generated.",
+            "type": "text"
+        },
+        {
+            "type": "separator"
+        },
+        {
+            "name": "Persistence method",
+            "info": "How Ryugyong will persist through device restarts.",
+            "type": "list",
+            "items": [ "auto-run registry key", "startup folder", "impersonate desktop shortcuts", "logon registry key (requires admin)", "task scheduler (requires admin)" ]
+        },
+        {
+            "name": "Better persistence when admin",
+            "info": "Whether Ryugyong will use a better persistence method when it has admin privileges.",
+            "type": "checkbox"
+        }
+    ],
+    "m-setup": [
+        {
+            "name": "Use custom directory",
+            "info": "Installs Ryugyong to a custom directory. If unchecked, Ryugyong will install to the music folder or windows folder if it has admin privileges.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Custom directory path",
+            "info": "The path of the directory. Use \"<USERPROFILE>\" for the user profile directory or \"<USER>\" for the device's username.",
+            "type": "text"
+        },
+        {
+            "type": "separator"
+        },
+        {
+            "name": "Use custom name",
+            "info": "Rename Ryugyong to a custom name. If unchecked, Ryugyong will set its name to \"svchost\" on Windows 11 or \"conhost\" on Windows 10.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Custom name",
+            "info": "The name Ryugyong will rename itself to.",
+            "type": "text"
+        }
+    ],
+    "m-protection": [
+        {
+            "name": "Check username",
+            "info": "Checks if the device's username is a common VM username.",
+            "type": "checkbox",
+            "value": "true"
+        },
+        {
+            "name": "Check desktop file names",
+            "info": "Checks if over 80% of the files on the desktop have fully uppercase names.",
+            "type": "checkbox",
+            "value": "true"
+        }
+    ],
+
+    "d-url": [
+
+    ],
+    "d-options": [
+
+    ],
+    "d-protection": [
+
+    ],
+
+    "z-settings": [
+        {
+            "name": "Clean main build",
+            "info": "Cleans the main build before building it.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Clean dropper build",
+            "info": "Cleans the dropper build before building it.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Build as PowerShell script",
+            "info": "Builds Ryugyong as a PowerShell script.",
+            "type": "checkbox"
+        }
+    ]
+}
