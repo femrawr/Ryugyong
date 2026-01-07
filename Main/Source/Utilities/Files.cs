@@ -53,7 +53,7 @@ namespace Main.Source.Utilities
 
             try
             {
-                byte[] buffer = new byte[1024 * 1024];
+                byte[] buffer = new byte[1 * 1024 * 1024];
                 var rng = new Random();
 
                 long fileSize = new FileInfo(path).Length;

@@ -51,7 +51,6 @@
                 : Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
             string logFolder = Path.Combine(baseDir, LogFolderName);
-
             if (!Directory.Exists(logFolder))
             {
                 Directory.CreateDirectory(logFolder);
@@ -60,7 +59,6 @@
             string logFileName = DateTime.Now.ToString("d-M-yyyy");
 
             _logFilePath = Path.Combine(logFolder, logFileName + LogFileExtention);
-
             if (File.Exists(_logFilePath))
             {
                 return;
