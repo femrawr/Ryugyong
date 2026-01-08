@@ -23,6 +23,7 @@ router.post('/start-build', async (req, res) => {
 
     const update = await fetch(config.domain + '/update-config', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(req.body)
     });
 
@@ -64,21 +65,23 @@ router.post('/start-build', async (req, res) => {
         const ryuDir = path.resolve('../Main');
         const outDir = path.join(ryuDir, 'bin/Release/net8.0-windows10.0.17763.0/publish');
 
-        if (req.body.clean_main_build && fs.existsSync(out)) {
-            fs.rmSync(out, { recursive: true, force: true });
+        if (req.body.clean_ryugyong_build) {
+            await execute('dotnet clean', {
+                cwd: ryuDir
+            });
         }
 
-        await execute(`dotnet publish -c Release --self-contained ${req.body.self_contain} -p:DebugType=none -p:DebugSymbols=false -p:AssemblyName="${req.body.custom_name ?? 'Runtime Broker'}"`, {
+        await execute(`dotnet publish -c Release --self-contained ${req.body.self_contain_ryugyong_build} -p:DebugType=none -p:DebugSymbols=false -p:AssemblyName="${req.body.custom_name || 'Runtime Broker'}"`, {
             cwd: ryuDir
         });
 
         const zipped = path.join(outputDir, 'publish.zip');
-        await new Promise((res, rej) => {
+        await new Promise((resolve, reject) => {
             const output = fs.createWriteStream(zipped);
             const archive = archiver('zip', { zlib: { level: 9 } });
 
-            output.on('close', res);
-            archive.on('error', rej);
+            output.on('close', resolve);
+            archive.on('error', reject);
 
             archive.pipe(output);
             archive.directory(outDir, false);
@@ -104,14 +107,14 @@ router.post('/start-build', async (req, res) => {
             fs.unlinkSync(zipped);
         }
     } catch(e) {
-        common.error('failed to compile main - ', e);
+        console.error('failed to compile main - ', e);
 
         return res
             .status(500)
             .send('failed to compile main');
     }
 
-    common.celeb('built main successfully');
+    console.log('built main successfully');
 
     if (url !== '') {
         const updateURL = await fetch(config.domain + '/update-config', {

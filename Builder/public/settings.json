@@ -72,6 +72,14 @@
             "name": "Better persistence when admin",
             "info": "Whether Ryugyong will use a better persistence method when it has admin privileges.",
             "type": "checkbox"
+        },
+        {
+            "type": "separator"
+        },
+        {
+            "name": "Tracking ID",
+            "info": "A custom ID/code to help you keep track of this build.",
+            "type": "text"
         }
     ],
     "m-setup": [
@@ -126,9 +134,22 @@
 
     "z-settings": [
         {
-            "name": "Clean main build",
-            "info": "Cleans the main build before building it.",
+            "name": "Clean Ryugyong build",
+            "info": "Cleans the main Ryugyong build before building it.",
             "type": "checkbox"
+        },
+        {
+            "name": "Self contain Ryugyong build",
+            "info": "Bundles the .NET runtime with the Ryugyong build.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Build single file",
+            "info": "Builds Ryugyong as a single executable.",
+            "type": "checkbox"
+        },
+        {
+            "type": "separator"
         },
         {
             "name": "Clean dropper build",
@@ -136,8 +157,8 @@
             "type": "checkbox"
         },
         {
-            "name": "Build as PowerShell script",
-            "info": "Builds Ryugyong as a PowerShell script.",
+            "name": "Statically link dropper",
+            "info": "Statically links the required libraries with the dropper.",
             "type": "checkbox"
         }
     ]
