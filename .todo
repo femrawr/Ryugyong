@@ -10,9 +10,9 @@ ryu:
 builder:
 - features tab ; disable/enabled commands
 - option to encrypt main
-- function in crypto to set key to not use config to cache key
-- tracking id
 - self contain build option
+- regex class or smth to bulk replace
+- use published trimmed if winforms stuff isnt used
 
 dev tools:
 - log reader
