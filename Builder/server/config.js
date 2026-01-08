@@ -5,8 +5,6 @@ export default {
 
     debug: true,
 
-    cachedCryptoKey: '',
-
     get domain() {
         return this.protocol + '://' + this.host + ':' + this.port;
     }

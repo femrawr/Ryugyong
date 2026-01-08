@@ -14,48 +14,64 @@ export default {
 
     _chunk: 1 * 1024 * 1024,
 
-    encryptString(string, key) {
-        const { theKey, saltBytes } = this._genKey(key);
+    _key: '',
+
+    setCryptoKey(key) {
+        this._key = key;
+    },
+
+    encryptString(string) {
+        if (!this._key) {
+            console.error('encryptString: key not set');
+            return '';
+        }
+
+        const { key, salt } = this._genKey();
 
         const dataBytes = Buffer.from(string, 'utf-8');
 
         const nonce = common.genStr(this._nonceLen);
         const nonceBytes = Buffer.from(nonce, 'utf-8');
 
-        const chacha = new ChaCha20Poly1305(theKey);
+        const chacha = new ChaCha20Poly1305(key);
         const sealed = chacha.seal(nonceBytes, dataBytes);
 
         const cipher = sealed.slice(0, sealed.length - this._tagLen);
         const tag = sealed.slice(sealed.length - this._tagLen);
 
-        const joined = Buffer.concat([saltBytes, nonceBytes, cipher, tag])
+        const joined = Buffer.concat([salt, nonceBytes, cipher, tag])
         return joined.toString('base64');
     },
 
-    async encryptFile(file, key) {
+    async encryptFile(file) {
+        if (!this._key) {
+            console.error('encryptFile: key not set');
+            return '';
+        }
+
         const oldDir = path.dirname(file);
         const newFile = path.join(oldDir, common.genStr(7));
 
-        const { theKey, saltBytes } = this._genKey(key);
+        const { key, salt } = this._genKey();
 
         const read = fs.createReadStream(file, { highWaterMark: this._chunk });
         const write = fs.createWriteStream(newFile);
 
-        write.write(saltBytes);
+        write.write(salt);
 
-        const chacha = new ChaCha20Poly1305(theKey);
+        const chacha = new ChaCha20Poly1305(key);
 
         const __stats = fs.statSync(file);
         const __size = __stats.size;
         const __chunks = Math.ceil(__size / this._chunk);
         let __chunksDone = 0;
 
-        return new Promise((_, rej) => {
+        return new Promise((resolve, reject) => {
             read.on('data', (chunk) => {
                 __chunksDone++;
 
                 if (config.debug) {
-                    console.log(`encrypting file "${file}" ${__chunksDone}/${__chunks}`);
+                    console.log(`encryptFile: encrypting file "${file}" ${__chunksDone}/${__chunks}`);
                 }
 
                 const nonce = common.genStr(this._nonceLen);
@@ -76,29 +92,29 @@ export default {
             });
 
             write.on('finish', () => {
-                if (!config.debug) {
-                    return;
+                if (config.debug) {
+                    console.log(`encryptFile: "${file}" has been encrypted to "${newFile}"`);
                 }
 
-                console.log(`"${file}" has been encrypted to "${newFile}"`);
+                resolve(newFile);
             });
 
-            read.on('error', rej);
-            write.on('error', rej);
+            read.on('error', reject);
+            write.on('error', reject);
         });
     },
 
-    _genKey(key) {
+    _genKey() {
         const salt = common.genStr(this._saltLen);
         const saltBytes = Buffer.from(salt,'utf-8');
 
-        const keyBytes = Buffer.from(key, 'utf8');
+        const keyBytes = Buffer.from(this._key, 'utf8');
 
         const joined = Buffer.concat([keyBytes, saltBytes]);
 
         return {
-            theKey: sha256(joined),
-            saltBytes: saltBytes
+            key: sha256(joined),
+            salt: saltBytes
         };
     }
 };

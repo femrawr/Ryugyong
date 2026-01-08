@@ -26,17 +26,17 @@ export default {
         });
 
         if (!upload.ok) {
-            console.error('upload was not ok');
+            console.error('upload: upload was not ok');
             return UploadStatus.RequestNotOK;
         }
 
         const data = await upload.text();
         if (!data.startsWith('https://')) {
-            console.error('failed to upload file -', data);
+            console.error('upload: failed to upload file -', data);
             return UploadStatus.UnexpectedData;
         }
 
-        console.log('file uploaded to -', data);
+        console.log('upload: file uploaded to -', data);
         return data;
     }
 };

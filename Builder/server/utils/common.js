@@ -3,7 +3,7 @@ export default {
 
     genStr(len) {
         if (!len) {
-            console.error('cannot gen string due to no length provided');
+            console.error('genStr: no length provided');
             return '';
         }
 
