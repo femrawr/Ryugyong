@@ -7,17 +7,12 @@ ryu:
 - wipe cmd
 - bypass arg for ss
 - draw cursor arg for ss
-- flag handler thing ; -flag -flag2
 - no init in misc config ; for debugging
-- check during debug mode of bsod cmd ; ask to type certain string, warn it will work when elevated
 - fix false warning "AutoRun.Install: failed to enable autostart"
-- handle exeption System.Runtime.InteropServices.COMException: No capture devices are available for cam cmd
-- handle exeption System.ComponentModel.Win32Exception: Not all privileges or groups referenced are assigned to the caller for critical
 
 builder:
 - features tab ; disable/enabled commands
 - option to encrypt main
-- self contain build option
 - regex class or smth to bulk replace
 - use published trimmed if winforms stuff isnt used
 
