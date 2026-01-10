@@ -1,5 +1,4 @@
 ﻿using System.Security.Principal;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Main.Source.Utilities
 {

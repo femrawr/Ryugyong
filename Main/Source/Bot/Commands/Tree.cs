@@ -18,39 +18,29 @@ namespace Main.Source.Bot.Commands
                 return;
             }
 
-            string input = string.Join(" ", args);
+            string arguments = string.Join(" ", args);
 
-            int start = input.IndexOf('"');
-            int end = input.LastIndexOf('"');
-
-            if (start == -1 || end == -1 || end <= start)
-            {
-                await socket.Message.ReplyAsync("Usage: " + Use);
-                return;
-            }
-
-            string path = input.Substring(start + 1, end - start - 1);
+            string path = Utilities.Parser.FromQuotes(arguments);
             if (!Directory.Exists(path))
             {
                 await socket.Message.ReplyAsync($"Directory `{path}` does not exist");
                 return;
             }
 
-            string depthStr = input.Substring(end + 1).Trim();
+            string depthStr = arguments.Replace($"\"{path}\"", "").Trim();
             if (!int.TryParse(depthStr, out int maxDepth))
             {
                 maxDepth = 1;
             }
 
-            var tree = new StringBuilder();
+            var builder = new StringBuilder();
+            Utilities.Files.FileTree(path, "", 0, maxDepth, builder);
 
-            Utilities.Files.FileTree(path, "", 0, maxDepth, tree);
+            string tree = builder.ToString();
 
-            string output = tree.ToString();
-
-            if (output.Length > 1900 + path.Length + 2)
+            if (tree.Length > 1900 + path.Length + 2)
             {
-                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(output)))
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(tree)))
                 {
                     await socket.Channel.SendFileAsync(
                         stream: stream,
@@ -62,7 +52,7 @@ namespace Main.Source.Bot.Commands
             }
             else
             {
-                await socket.Message.ReplyAsync($"`{path}`\n```\n{output}\n```");
+                await socket.Message.ReplyAsync($"`{path}`\n```\n{tree}\n```");
             }
         }
     }

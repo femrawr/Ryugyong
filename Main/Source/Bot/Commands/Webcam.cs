@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using System.Runtime.InteropServices;
 using Windows.Media.Capture;
 using Windows.Media.MediaProperties;
 using Windows.Storage.Streams;
@@ -51,6 +52,10 @@ namespace Main.Source.Bot.Commands
             catch (UnauthorizedAccessException)
             {
                 await socket.Message.ReplyAsync("No access to webcam");
+            }
+            catch (COMException)
+            {
+                await socket.Message.ReplyAsync("No webcam available");
             }
         }
     }

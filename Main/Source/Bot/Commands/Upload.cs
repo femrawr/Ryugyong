@@ -18,18 +18,9 @@ namespace Main.Source.Bot.Commands
                 return;
             }
 
-            string input = string.Join(" ", args);
+            string arguments = string.Join(" ", args);
 
-            int start = input.IndexOf('"');
-            int end = input.LastIndexOf('"');
-
-            if (start == -1 || end == -1 || end <= start)
-            {
-                await socket.Message.ReplyAsync("Usage: " + Use);
-                return;
-            }
-
-            string path = input.Substring(start + 1, end - start - 1);
+            string path = Utilities.Parser.FromQuotes(arguments);
 
             if (!Path.Exists(path))
             {

