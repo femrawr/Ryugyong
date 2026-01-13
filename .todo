@@ -5,10 +5,19 @@ ryu:
 - audio cmd
 - volume cmd
 - wipe cmd
+- msgbox cmd
+- rotate screen cmd
+- play sound cmd
+- tts cmd
+- block input cmd
 - bypass arg for ss
 - draw cursor arg for ss
 - no init in misc config ; for debugging
 - fix false warning "AutoRun.Install: failed to enable autostart"
+- telegram bot support
+- actually do persistence
+- do start folder persistence method
+- make persistence check functions return strings
 
 builder:
 - features tab ; disable/enabled commands
