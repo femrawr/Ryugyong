@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace Main.Source.Utilities.Persistence
+namespace Main.Source.Functions.Persistence
 {
     public class AutoRun
     {
@@ -12,24 +12,17 @@ namespace Main.Source.Utilities.Persistence
             var allowed = Registry.CurrentUser.OpenSubKey(AllowedPath, true);
             if (allowed == null)
             {
-                Logger.Warn("AutoRun.Install: failed to open start approved");
+                Utilities.Logger.Warn("AutoRun.Install: failed to open start approved");
             }
             else
             {
-                try
-                {
-                    allowed.DeleteValue(name, true);
-                }
-                catch
-                {
-                    Logger.Warn($"AutoRun.Install: failed to enable autostart");
-                }
+                allowed.DeleteValue(name, false);
             }
 
             var run = Registry.CurrentUser.OpenSubKey(RunPath, true);
             if (run == null)
             {
-                Logger.Warn("AutoRun.Install: failed to open run");
+                Utilities.Logger.Warn("AutoRun.Install: failed to open run");
             }
             else
             {
@@ -39,7 +32,7 @@ namespace Main.Source.Utilities.Persistence
                 }
                 catch
                 {
-                    Logger.Warn($"AutoRun.Install: failed to install");
+                    Utilities.Logger.Warn($"AutoRun.Install: failed to install");
                 }
             }
         }
@@ -49,7 +42,7 @@ namespace Main.Source.Utilities.Persistence
             var run = Registry.CurrentUser.OpenSubKey(RunPath, true);
             if (run == null)
             {
-                Logger.Warn("AutoRun.Uninstall: failed to open run");
+                Utilities.Logger.Warn("AutoRun.Uninstall: failed to open run");
             }
             else
             {
@@ -59,7 +52,7 @@ namespace Main.Source.Utilities.Persistence
                 }
                 catch
                 {
-                    Logger.Warn($"AutoRun.Install: failed to uninstall");
+                    Utilities.Logger.Warn($"AutoRun.Install: failed to uninstall");
                 }
             }
         }

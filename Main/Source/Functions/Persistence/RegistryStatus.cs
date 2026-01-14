@@ -1,4 +1,4 @@
-﻿namespace Main.Source.Utilities.Persistence
+﻿namespace Main.Source.Functions.Persistence
 {
     public enum AutoRunStatus
     {

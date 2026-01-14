@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32.TaskScheduler;
 
-namespace Main.Source.Utilities.Persistence
+namespace Main.Source.Functions.Persistence
 {
     public class TaskScheduler
     {
@@ -39,7 +39,7 @@ namespace Main.Source.Utilities.Persistence
 
                 if (registered == null)
                 {
-                    Logger.Error("TaskScheduler.Install: failed to install");
+                    Utilities.Logger.Error("TaskScheduler.Install: failed to install");
                 }
             }
         }
@@ -51,7 +51,7 @@ namespace Main.Source.Utilities.Persistence
                 var task = scheduler.GetTask(name);
                 if (task == null)
                 {
-                    Logger.Warn($"TaskScheduler.Uninstall: failed to find task");
+                    Utilities.Logger.Warn($"TaskScheduler.Uninstall: failed to find task");
                     return;
                 }
 
@@ -61,7 +61,7 @@ namespace Main.Source.Utilities.Persistence
                 }
                 catch
                 {
-                    Logger.Warn($"TaskScheduler.Uninstall: failed to uninstall");
+                    Utilities.Logger.Warn($"TaskScheduler.Uninstall: failed to uninstall");
                 }
             }
         }
