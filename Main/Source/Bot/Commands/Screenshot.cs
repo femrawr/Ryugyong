@@ -7,7 +7,7 @@ namespace Main.Source.Bot.Commands
     {
         public override string Name => "ss";
         public override string Info => "Takes a screenshot of the users screen";
-        public override string Use => "Scale factor (num)? [-bypass?]";
+        public override string Use => "Scale factor (num)? [-bypass? | -nocursor?]";
 
         public override async Task Func(SocketCommandContext socket, string[] args)
         {

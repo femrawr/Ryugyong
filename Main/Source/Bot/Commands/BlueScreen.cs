@@ -9,7 +9,7 @@ namespace Main.Source.Bot.Commands
         [DllImport("ntdll.dll")]
         public static extern uint RtlAdjustPrivilege(
             int Privilege,
-            bool bEnablePrivilege,
+            bool EnablePrivilege,
             bool IsThreadPrivilege,
             out bool PreviousValue
         );

@@ -81,7 +81,7 @@ namespace Main.Source.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Warn($"SecureDelete: [{ex.GetType()}] {ex.Message} - {ex.StackTrace}");
+                Logger.Error($"SecureDelete: [{ex.GetType()}] {ex.Message} - {ex.StackTrace}");
             }
         }
 

@@ -1,21 +1,18 @@
 ryu:
 - debug cmd
 - file cmd
-- wallpaper cmd
-- audio cmd
-- volume cmd
 - wipe cmd
 - msgbox cmd
-- rotate screen cmd
-- play sound cmd
-- tts cmd
-- block input cmd
 - bypass arg for ss
 - draw cursor arg for ss
 - no init in misc config ; for debugging
 - telegram bot support
 - do start folder persistence method
 - make persistence check functions return strings
+- create users cmd (noescape)
+- make desktop files jump around cmd (noescape)
+- parser func for text="balls" -> balls
+- backup tokens and stuff
 
 builder:
 - features tab ; disable/enabled commands

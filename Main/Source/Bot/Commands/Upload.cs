@@ -8,7 +8,7 @@ namespace Main.Source.Bot.Commands
     {
         public override string Name => "upload";
         public override string Info => "Uploads files from the deivce to the server";
-        public override string Use => "path (wrap in double quotes)";
+        public override string Use => "Path (wrap in double quotes)";
 
         public override async Task Func(SocketCommandContext socket, string[] args)
         {

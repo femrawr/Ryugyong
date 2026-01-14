@@ -9,10 +9,10 @@ namespace Main.Source.Bot.Commands
     {
         [DllImport("ntdll.dll")]
         private static extern int NtSetInformationProcess(
-            IntPtr hProcess,
-            int processInformationClass,
-            ref int processInformation,
-            int processInformationLength
+            IntPtr Process,
+            int ProcessInformationClass,
+            ref int ProcessInformation,
+            int ProcessInformationLength
         );
 
         public override string Name => "critical";

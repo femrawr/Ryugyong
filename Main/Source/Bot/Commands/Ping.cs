@@ -3,7 +3,7 @@ using Discord.Commands;
 
 namespace Main.Source.Bot.Commands
 {
-    internal class Ping : CommandBase
+    public class Ping : CommandBase
     {
         public override string Name => "ping";
         public override string Info => "Test command";
