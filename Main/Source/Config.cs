@@ -60,7 +60,7 @@
     {
         public const int MAJOR = 2;
         public const int MINOR = 8;
-        public const int PATCH = 2;
+        public const int PATCH = 3;
 
         public const string TRACKING = "";
     }

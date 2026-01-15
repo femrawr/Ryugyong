@@ -75,7 +75,7 @@ namespace Main.Source.Functions
                         goto noCursor;
                     }
 
-                    IntPtr hdc = graphics.GetHdc();
+                    nint hdc = graphics.GetHdc();
 
                     try
                     {
