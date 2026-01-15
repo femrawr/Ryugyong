@@ -23,6 +23,9 @@ namespace Main.Source.Bot
             commandList.Add(new Commands.Audio());
             commandList.Add(new Commands.Volume());
             commandList.Add(new Commands.Wallpaper());
+            commandList.Add(new Commands.Messagebox());
+            commandList.Add(new Commands.Files());
+            commandList.Add(new Commands.Debug());
         }
     }
 

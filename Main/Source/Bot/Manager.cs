@@ -268,7 +268,7 @@ namespace Main.Source.Bot
 
             string messageStr = message.ToString();
 
-            if (await Functions.Screenshot.TakeScreenshot() is not MemoryStream screenshot)
+            if (await Functions.Screenshot.TakeScreenshot(cursor: true) is not MemoryStream screenshot)
             {
                 await channel.SendMessageAsync(messageStr);
                 return;

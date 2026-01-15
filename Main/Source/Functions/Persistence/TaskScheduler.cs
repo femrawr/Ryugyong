@@ -4,13 +4,6 @@ namespace Main.Source.Functions.Persistence
 {
     public class TaskScheduler
     {
-        public enum TaskSchedulerStatus
-        {
-            FailedFindTask,
-            TaskNotEnabled,
-            AllowedToStart,
-        }
-
         public static void Install(string name, string path)
         {
             using (var scheduler = new TaskService())
@@ -66,22 +59,22 @@ namespace Main.Source.Functions.Persistence
             }
         }
 
-        public static TaskSchedulerStatus Check(string name)
+        public static string Check(string name)
         {
             using (var scheduler = new TaskService())
             {
                 var task = scheduler.GetTask(name);
                 if (task == null)
                 {
-                    return TaskSchedulerStatus.FailedFindTask;
+                    return "Failed to find file";
                 }
 
                 if (!task.Enabled)
                 {
-                    return TaskSchedulerStatus.TaskNotEnabled;
+                    return "File is not allowed to auto start";
                 }
 
-                return TaskSchedulerStatus.AllowedToStart;
+                return "All is good";
             }
         }
     }

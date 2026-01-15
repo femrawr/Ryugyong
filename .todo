@@ -1,18 +1,16 @@
 ryu:
-- debug cmd
-- file cmd
 - wipe cmd
-- msgbox cmd
 - bypass arg for ss
-- draw cursor arg for ss
 - no init in misc config ; for debugging
 - telegram bot support
 - do start folder persistence method
-- make persistence check functions return strings
 - create users cmd (noescape)
 - make desktop files jump around cmd (noescape)
-- parser func for text="balls" -> balls
 - backup tokens and stuff
+- wiki
+- finish debug cmd
+- finish file cmd
+- encrypt file util
 
 builder:
 - features tab ; disable/enabled commands

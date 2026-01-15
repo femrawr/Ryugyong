@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Main.Source.Functions
 {
@@ -10,9 +11,39 @@ namespace Main.Source.Functions
         [DllImport("user32.dll")]
         private static extern int GetSystemMetrics(int nIndex);
 
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorInfo(out CursorInfo pci);
+
+        [DllImport("user32.dll")]
+        static extern bool DrawIcon(
+            IntPtr hDC,
+            int X,
+            int Y,
+            IntPtr hIcon
+        );
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Point
+        {
+            public int x;
+            public int y;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct CursorInfo
+        {
+            public int cbSize;
+            public uint flags;
+            public IntPtr hCursor;
+            public Point ptScreenPos;
+        }
+
         private static float _scale = -0.0f;
 
-        public async static Task<MemoryStream?> TakeScreenshot(float? scale = null)
+        public async static Task<MemoryStream?> TakeScreenshot(
+            float? scale = null,
+            bool cursor = false
+        )
         {
             int x = GetSystemMetrics(0);
             int y = GetSystemMetrics(1);
@@ -23,7 +54,6 @@ namespace Main.Source.Functions
             }
 
             float theScale = scale ?? (_scale != -0.0f ? _scale : GetScale());
-
             var bitmap = new Bitmap((int)(x * theScale), (int)(y * theScale));
 
             try
@@ -31,6 +61,37 @@ namespace Main.Source.Functions
                 using (var graphics = Graphics.FromImage(bitmap))
                 {
                     graphics.CopyFromScreen(0, 0, 0, 0, bitmap.Size);
+
+                    if (!cursor)
+                    {
+                        goto noCursor;
+                    }
+                        
+                    var info = new CursorInfo();
+                    info.cbSize = Marshal.SizeOf(typeof(CursorInfo));
+
+                    if (!GetCursorInfo(out info))
+                    {
+                        goto noCursor;
+                    }
+
+                    IntPtr hdc = graphics.GetHdc();
+
+                    try
+                    {
+                        DrawIcon(
+                            hdc,
+                            (int)(info.ptScreenPos.x * theScale),
+                            (int)(info.ptScreenPos.y * theScale),
+                            info.hCursor
+                        );
+                    }
+                    finally
+                    {
+                        graphics.ReleaseHdc(hdc);
+                    }
+
+                noCursor:;
                 }
 
                 var stream = new MemoryStream();

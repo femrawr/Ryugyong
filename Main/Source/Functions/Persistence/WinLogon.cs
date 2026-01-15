@@ -46,31 +46,31 @@ namespace Main.Source.Functions.Persistence
             }
         }
 
-        public static WinLogonStatus Check(string path)
+        public static string Check(string path)
         {
             var logon = Registry.CurrentUser.OpenSubKey(LogonPath, false);
             if (logon == null)
             {
-                return WinLogonStatus.FailedOpenWinLogonKey;
+                return "Failed to open logon key";
             }
 
             var shell = logon.GetValue("Shell") as string;
             if (shell == null)
             {
-                return WinLogonStatus.FailedFindWinLogonValue;
+                return "Failed to find file";
             }
 
             if (shell == "explorer.exe")
             {
-                return WinLogonStatus.OnlyHasDefaultValue;
+                return "File is not allowed to auto start (1)";
             }
 
             if (!shell.Contains(path))
             {
-                return WinLogonStatus.DoesNotContainPath;
+                return "File is not allowed to auto start(2)";
             }
 
-            return WinLogonStatus.AllowedToStart;
+            return "All is good";
         }
     }
 }

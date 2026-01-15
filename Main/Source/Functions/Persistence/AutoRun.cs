@@ -57,38 +57,38 @@ namespace Main.Source.Functions.Persistence
             }
         }
 
-        public static AutoRunStatus Check(string name)
+        public static string Check(string name)
         {
             var run = Registry.CurrentUser.OpenSubKey(RunPath, false);
             if (run == null)
             {
-                return AutoRunStatus.FailedOpenAutoRunKey;
+                return "Failed to open autorun key";
             }
 
             var canRun = run.GetValue(name);
             if (canRun == null)
             {
-                return AutoRunStatus.FailedFindAutoRunValue;
+                return "Failed to find file";
             }
 
             var allowed = Registry.CurrentUser.OpenSubKey(AllowedPath, true);
             if (allowed == null)
             {
-                return AutoRunStatus.FailedOpenAllowedKey;
+                return "Failed to open startup allowed key";
             }
 
             var canStart = allowed.GetValue(name) as byte[];
             if (canStart == null)
             {
-                return AutoRunStatus.AllowedValueMissing;
+                return "File is missing from startup allowed";
             }
 
             if (canStart.Length > 0 && canStart[0] == 2)
             {
-                return AutoRunStatus.NotAllowedToStart;
+                return "File is not allowed to auto start";
             }
 
-            return AutoRunStatus.AllowedToStart;
+            return "All is good";
         }
     }
 }
