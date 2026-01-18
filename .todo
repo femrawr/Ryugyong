@@ -24,6 +24,7 @@ builder:
 - option to encrypt main
 - regex class or smth to bulk replace
 - use published trimmed if winforms stuff isnt used
+- make statically link dropper actually do it
 
 dev tools:
 - log reader

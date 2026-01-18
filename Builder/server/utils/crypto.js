@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 
 import { ChaCha20Poly1305 } from '@stablelib/chacha20poly1305';
 import { hash as sha256 } from '@stablelib/sha256';
@@ -8,7 +9,7 @@ import common from './common.js';
 import config from '../config.js';
 
 export default {
-    _saltLen: 100,
+    _saltLen: 20,
     _nonceLen: 12,
     _tagLen: 16,
 
@@ -17,6 +18,11 @@ export default {
     _key: '',
 
     setCryptoKey(key) {
+        if (this._key !== '') {
+            console.warn('setCryptoKey: attempted to call twice');
+            return;
+        }
+
         this._key = key;
     },
 
@@ -28,18 +34,13 @@ export default {
 
         const { key, salt } = this._genKey();
 
-        const dataBytes = Buffer.from(string, 'utf-8');
-
-        const nonce = common.genStr(this._nonceLen);
-        const nonceBytes = Buffer.from(nonce, 'utf-8');
+        const nonce = crypto.randomBytes(this._nonceLen);
+        const data = Buffer.from(string, 'utf-8');
 
         const chacha = new ChaCha20Poly1305(key);
-        const sealed = chacha.seal(nonceBytes, dataBytes);
+        const sealed = chacha.seal(nonce, data);
 
-        const cipher = sealed.slice(0, sealed.length - this._tagLen);
-        const tag = sealed.slice(sealed.length - this._tagLen);
-
-        const joined = Buffer.concat([salt, nonceBytes, cipher, tag])
+        const joined = Buffer.concat([salt, nonce, sealed])
         return joined.toString('base64');
     },
 
@@ -49,8 +50,9 @@ export default {
             return '';
         }
 
+        const oldExt = path.extname(file);
         const oldDir = path.dirname(file);
-        const newFile = path.join(oldDir, common.genStr(7));
+        const newFile = path.join(oldDir, common.genStr(7) + oldExt);
 
         const { key, salt } = this._genKey();
 
@@ -74,17 +76,11 @@ export default {
                     console.log(`encryptFile: encrypting file "${file}" ${__chunksDone}/${__chunks}`);
                 }
 
-                const nonce = common.genStr(this._nonceLen);
-                const nonceBytes = Buffer.from(nonce, 'utf-8');
+                const nonce = crypto.randomBytes(this._nonceLen);
+                const sealed = chacha.seal(nonce, chunk);
 
-                const sealed = chacha.seal(nonceBytes, chunk);
-
-                const cipher = sealed.slice(0, sealed.length - this._tagLen);
-                const tag = sealed.slice(sealed.length - this._tagLen);
-
-                write.write(nonceBytes);
-                write.write(cipher);
-                write.write(tag);
+                write.write(nonce);
+                write.write(sealed);
             });
 
             read.on('end', () => {
@@ -92,10 +88,6 @@ export default {
             });
 
             write.on('finish', () => {
-                if (config.debug) {
-                    console.log(`encryptFile: "${file}" has been encrypted to "${newFile}"`);
-                }
-
                 resolve(newFile);
             });
 
@@ -105,9 +97,7 @@ export default {
     },
 
     _genKey() {
-        const salt = common.genStr(this._saltLen);
-        const saltBytes = Buffer.from(salt,'utf-8');
-
+        const saltBytes = crypto.randomBytes(this._saltLen);
         const keyBytes = Buffer.from(this._key, 'utf8');
 
         const joined = Buffer.concat([keyBytes, saltBytes]);

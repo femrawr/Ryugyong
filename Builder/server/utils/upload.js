@@ -14,11 +14,13 @@ export default {
         fs.renameSync(file, newName);
 
         const buff = fs.readFileSync(newName);
-        const blob = new Blob([buff.toString('base64')], { type: 'text/plain' });
+        const blob = new Blob([buff], { type: 'text/plain' });
 
         const form = new FormData();
         form.append('reqtype', 'fileupload');
         form.append('fileToUpload', blob, newName);
+
+        console.log('uploading file...');
 
         const upload = await fetch(this.api, {
             method: 'POST',
@@ -37,6 +39,6 @@ export default {
         }
 
         console.log('upload: file uploaded to -', data);
-        return data;
+        return { uploaded: data, newFile: newName };
     }
 };

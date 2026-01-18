@@ -112,24 +112,45 @@
             "name": "Check username",
             "info": "Checks if the device's username is a common VM username.",
             "type": "checkbox",
-            "value": "true"
+            "value": "true",
+            "id": "main_check_username"
         },
         {
             "name": "Check desktop file names",
             "info": "Checks if over 80% of the files on the desktop have fully uppercase names.",
             "type": "checkbox",
-            "value": "true"
+            "value": "true",
+            "id": "main_check_desktop_file_names"
         }
     ],
 
-    "d-url": [
-
-    ],
     "d-options": [
-
+        {
+            "name": "Upload Ryugyong file",
+            "info": "Uploads the Ryugyong build zip file to catbox so only the dropper file is shipped.",
+            "type": "checkbox"
+        },
+        {
+            "name": "Encrypt Ryugyong file",
+            "info": "Encrypts the Ryugyong build zip file.",
+            "type": "checkbox"
+        }
     ],
     "d-protection": [
-
+        {
+            "name": "Check username",
+            "info": "Checks if the device's username is a common VM username.",
+            "type": "checkbox",
+            "value": "true",
+            "id": "dropper_check_username"
+        },
+        {
+            "name": "Check desktop file names",
+            "info": "Checks if over 80% of the files on the desktop have fully uppercase names.",
+            "type": "checkbox",
+            "value": "true",
+            "id": "dropper_check_desktop_file_names"
+        }
     ],
 
     "z-settings": [
@@ -160,6 +181,15 @@
             "name": "Statically link dropper",
             "info": "Statically links the required libraries with the dropper.",
             "type": "checkbox"
+        },
+        {
+            "type": "separator"
+        },
+        {
+            "name": "Build as",
+            "info": "How the final build will be built as.",
+            "type": "list",
+            "items": [ "Normal file", "PowerShell script", "Command Prompt script", "Run box script" ]
         }
     ]
 }

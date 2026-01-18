@@ -16,7 +16,28 @@ const setTitle = (title) => {
     }, 6 * 60 * 1000);
 };
 
+const buildCheck = () => {
+    // const config = JSON.parse(getConfig());
+
+    // if (config.build_as !== 'Normal file' && !config.upload_ryugyong_file) {
+    //     notif(
+    //         'Cannot build as anything other that "Normal file" if "Upload Ryugyong file" is not enabled.',
+    //         'Cannot build',
+    //         'error',
+    //         20
+    //     );
+
+    //     return false;
+    // }
+
+    return true;
+};
+
 build.addEventListener('click', async (e) => {
+    if (!buildCheck()) {
+        return;
+    }
+
     if (e.ctrlKey) {
         const res = await fetch('/update-config', {
             method: 'POST',

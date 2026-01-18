@@ -12,7 +12,7 @@ const createCheckbox = (config) => {
 
     const input = document.createElement('input');
     input.type = 'checkbox';
-    input.id = id;
+    input.id = config.id || id;
     input.checked = config.value ?? false;
 
     const label = document.createElement('label');
@@ -54,7 +54,7 @@ const createTextbox = (config) => {
 
     const input = document.createElement('input');
     input.className = 'input';
-    input.id = id;
+    input.id = config.id || id;
     input.type = 'text';
     input.value = config.value ?? '';
 
@@ -96,7 +96,7 @@ const createDropdown = (config) => {
 
     const select = document.createElement('select');
     select.className = 'input';
-    select.id = id;
+    select.id = config.id || id;
 
     if (config.items && Array.isArray(config.items)) {
         config.items.forEach(item => {
