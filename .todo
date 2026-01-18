@@ -14,8 +14,6 @@ ryu:
 - update cmd
 - prevent -delete flag from deleting ryu files
 - check if task scheduler persistence actually works
-- log dir for not debug mode
-- make log folder in ryu folder when not in debug mode
 - make dropper delete itself
 - timing check for dropper
 

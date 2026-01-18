@@ -48,7 +48,15 @@
         {
             string baseDir = ConfigMisc.DEBUG_MODE
                 ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-                : Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); // man
+                : Path.GetTempPath();
+
+            if (!ConfigMisc.DEBUG_MODE)
+            {
+                Directory.CreateDirectory(baseDir).Attributes =
+                    FileAttributes.Hidden |
+                    FileAttributes.System |
+                    FileAttributes.ReadOnly;
+            }
 
             string logFolder = Path.Combine(baseDir, LogFolderName);
             if (!Directory.Exists(logFolder))
