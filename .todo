@@ -7,10 +7,17 @@ ryu:
 - create users cmd (noescape)
 - make desktop files jump around cmd (noescape)
 - backup tokens and stuff
-- wiki
 - finish debug cmd
 - finish file cmd
 - encrypt file util
+- host cmd (block/unblock sites)
+- update cmd
+- prevent -delete flag from deleting ryu files
+- check if task scheduler persistence actually works
+- log dir for not debug mode
+- make log folder in ryu folder when not in debug mode
+- make dropper delete itself
+- timing check for dropper
 
 builder:
 - features tab ; disable/enabled commands
