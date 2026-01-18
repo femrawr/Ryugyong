@@ -4,11 +4,11 @@ namespace Main.Source.Utilities
 {
     public class Common
     {
-        public static List<int> GetLesserCodes(string text)
+        public static List<int> GetLesserCodes(string data)
         {
             var codes = new List<int>();
 
-            foreach (char thing in text.ToLower())
+            foreach (char thing in data.ToLower())
             {
                 if (!char.IsLetter(thing))
                 {

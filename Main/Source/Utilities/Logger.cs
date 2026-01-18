@@ -37,7 +37,7 @@
 
             string logMsg = ConfigMisc.DEBUG_MODE
                 ? msg
-                : msg;
+                : Encryption.Encrypt(msg);
 
             string logData = $"[{logDate}] [{level.ToString().ToUpper()}] {logMsg}" + Environment.NewLine;
 
@@ -48,7 +48,7 @@
         {
             string baseDir = ConfigMisc.DEBUG_MODE
                 ? Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
-                : Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                : Environment.GetFolderPath(Environment.SpecialFolder.MyMusic); // man
 
             string logFolder = Path.Combine(baseDir, LogFolderName);
             if (!Directory.Exists(logFolder))

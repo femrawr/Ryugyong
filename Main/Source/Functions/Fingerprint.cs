@@ -34,7 +34,7 @@ namespace Main.Source.Functions
             byte[] joined = Encoding.UTF8.GetBytes($"{guid?.ToString()}-{Environment.MachineName}");
             byte[] hashed = MD5.HashData(joined);
 
-            return Encoding.UTF8.GetString(hashed);
+            return Convert.ToHexString(hashed).ToUpper();
         }
     }
 }

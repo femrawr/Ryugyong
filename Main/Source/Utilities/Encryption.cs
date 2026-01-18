@@ -5,7 +5,7 @@ namespace Main.Source.Utilities
 {
     public class Encryption
     {
-        private const int SaltLen = 100;
+        private const int SaltLen = 20;
         private const int NonceLen = 12;
         private const int TagLen = 16;
 
