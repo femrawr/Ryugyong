@@ -7,13 +7,13 @@
     intended for manual editing.
 */
 
-pub const FILE_URL: &str = "FC4/LNhGDdCD/NohqwfsXgRetPWlsTfhVnnP9x2xcZEj5ihyZdfIeuRFkxPUEUZuBryI/RnxgZV5P/Ugq1zc4ZT5ABJkCZN/vuFE/f06+Q==";
+pub const FILE_URL: &str = "";
 
-pub const RANDOM_STR_1: &str = "zGY4KGz";
-pub const RANDOM_STR_2: &str = "K6yRGFP";
+pub const RANDOM_STR_1: &str = "";
+pub const RANDOM_STR_2: &str = "";
 
 pub const FILE_ENCRYPTED: bool = true;
-pub const ENCRYPTION_KEY: &str = "fllu3FimGR9hC3Yhm2SLf";
+pub const ENCRYPTION_KEY: &str = "";
 
 pub const CHECK_USERNAME: bool = true;
 pub const CHECK_DESKTOP_FILES: bool = true;
