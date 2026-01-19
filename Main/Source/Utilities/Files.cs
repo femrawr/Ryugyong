@@ -4,39 +4,43 @@ namespace Main.Source.Utilities
 {
     public class Files
     {
-        public static void CopyFiles(string? from, string to)
+        public static void CopyFiles(string? srcDir, string outDir)
         {
-            if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
+            if (string.IsNullOrEmpty(srcDir) || string.IsNullOrEmpty(outDir))
             {
-                Logger.Error($"CopyFiles: from \"{from}\" or to \"{to}\" is null or empty");
                 return;
             }
 
-            foreach (var file in Directory.GetFiles(from))
+            foreach (var file in Directory.GetFiles(srcDir))
             {
-                string newFile = Path.Combine(to, Path.GetFileName(file));
+                string newFile = Path.Join(outDir, Path.GetFileName(file));
                 File.Copy(file, newFile, true);
             }
 
-            foreach (var dir in Directory.GetDirectories(from))
+            foreach (var dir in Directory.GetDirectories(srcDir))
             {
-                string newDir = Path.Combine(to, Path.GetFileName(dir));
+                string newDir = Path.Join(outDir, Path.GetFileName(dir));
                 Directory.CreateDirectory(newDir);
 
                 CopyFiles(dir, newDir);
             }
         }
 
-        public static int CountFiles(string? path)
+        public static int CountFiles(string? dirPath)
         {
-            if (string.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(dirPath))
             {
                 return 0;
             }
 
-            int count = Directory.GetFiles(path).Length;
+            if (!Directory.Exists(dirPath))
+            {
+                return 0;
+            }
 
-            foreach (var dir in Directory.GetDirectories(path))
+            int count = Directory.GetFiles(dirPath).Length;
+
+            foreach (var dir in Directory.GetDirectories(dirPath))
             {
                 count += CountFiles(dir);
             }
@@ -44,9 +48,9 @@ namespace Main.Source.Utilities
             return count;
         }
 
-        public static void SecureDelete(string path)
+        public static void SecureDelete(string filePath)
         {
-            if (!File.Exists(path))
+            if (!File.Exists(filePath))
             {
                 return;
             }
@@ -56,9 +60,9 @@ namespace Main.Source.Utilities
                 byte[] buffer = new byte[1 * 1024 * 1024];
                 var rng = new Random();
 
-                long fileSize = new FileInfo(path).Length;
+                long fileSize = new FileInfo(filePath).Length;
 
-                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Write))
+                using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Write))
                 {
                     Array.Clear(buffer, 0, buffer.Length);
                     WriteChunk(stream, buffer, fileSize);
@@ -77,7 +81,7 @@ namespace Main.Source.Utilities
                     WriteChunk(stream, buffer, fileSize);
                 }
 
-                File.Delete(path);
+                File.Delete(filePath);
             }
             catch (Exception ex)
             {
@@ -86,19 +90,24 @@ namespace Main.Source.Utilities
         }
 
         public static void FileTree(
-            string path,
+            string dirPath,
             string prefix,
             int depth,
             int maxDepth,
             StringBuilder builder
         )
         {
+            if (!Directory.Exists(dirPath))
+            {
+                return;
+            }
+
             if (depth >= maxDepth)
             {
                 return;
             }
 
-            var dirInfo = new DirectoryInfo(path);
+            var dirInfo = new DirectoryInfo(dirPath);
 
             var items = dirInfo.EnumerateFileSystemInfos().ToList();
             int count = items.Count;

@@ -59,7 +59,7 @@
     public class ConfigVersion
     {
         public const int MAJOR = 2;
-        public const int MINOR = 8;
+        public const int MINOR = 9;
         public const int PATCH = 5;
 
         public const string TRACKING = "";

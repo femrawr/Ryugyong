@@ -60,7 +60,7 @@ namespace Main.Source.Bot.Commands
                 return;
             }
 
-            string path = Path.Combine(Path.GetTempPath(), name);
+            string path = Path.Join(Path.GetTempPath(), name);
 
             using (var res = await httpClient.GetAsync(url))
             {

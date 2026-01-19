@@ -3,7 +3,7 @@ ryu:
 - bypass arg for ss
 - no init in misc config ; for debugging
 - telegram bot support
-- do start folder persistence method
+- also check if start allowed for start folder
 - create users cmd (noescape)
 - make desktop files jump around cmd (noescape)
 - backup tokens and stuff
@@ -16,6 +16,7 @@ ryu:
 - check if task scheduler persistence actually works
 - make dropper delete itself
 - timing check for dropper
+- remove .lnk at the end of filePath in CreateShortcut if there is
 
 builder:
 - features tab ; disable/enabled commands
@@ -23,6 +24,7 @@ builder:
 - regex class or smth to bulk replace
 - use published trimmed if winforms stuff isnt used
 - make statically link dropper actually do it
+- allow more than 1 persistence method provided mutex is on
 
 dev tools:
 - log reader

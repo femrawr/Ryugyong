@@ -12,7 +12,7 @@ namespace Main.Source.Functions.Persistence
             var allowed = Registry.CurrentUser.OpenSubKey(AllowedPath, true);
             if (allowed == null)
             {
-                Utilities.Logger.Warn("AutoRun.Install: failed to open start approved");
+                Utilities.Logger.Warn("AutoRun.Install: failed to open StartupApproved key");
             }
             else
             {
@@ -22,18 +22,17 @@ namespace Main.Source.Functions.Persistence
             var run = Registry.CurrentUser.OpenSubKey(RunPath, true);
             if (run == null)
             {
-                Utilities.Logger.Warn("AutoRun.Install: failed to open run");
+                Utilities.Logger.Error("AutoRun.Install: failed to open Run key");
+                return;
             }
-            else
+
+            try
             {
-                try
-                {
-                    run.SetValue(name, $"\"{path}\" {ConfigMisc.LAUNCH_KEY}");
-                }
-                catch
-                {
-                    Utilities.Logger.Warn($"AutoRun.Install: failed to install");
-                }
+                run.SetValue(name, $"\"{path}\" {ConfigMisc.LAUNCH_KEY}");
+            }
+            catch
+            {
+                Utilities.Logger.Error($"AutoRun.Install: failed to install");
             }
         }
 
@@ -42,18 +41,17 @@ namespace Main.Source.Functions.Persistence
             var run = Registry.CurrentUser.OpenSubKey(RunPath, true);
             if (run == null)
             {
-                Utilities.Logger.Warn("AutoRun.Uninstall: failed to open run");
+                Utilities.Logger.Error("AutoRun.Uninstall: failed to open Run key");
+                return;
             }
-            else
+
+            try
             {
-                try
-                {
-                    run.DeleteValue(name, true);
-                }
-                catch
-                {
-                    Utilities.Logger.Warn($"AutoRun.Install: failed to uninstall");
-                }
+                run.DeleteValue(name, true);
+            }
+            catch
+            {
+                Utilities.Logger.Error($"AutoRun.Install: failed to uninstall");
             }
         }
 
@@ -62,33 +60,33 @@ namespace Main.Source.Functions.Persistence
             var run = Registry.CurrentUser.OpenSubKey(RunPath, false);
             if (run == null)
             {
-                return "Failed to open autorun key";
+                return "Failed to open Run key (bad)";
             }
 
             var canRun = run.GetValue(name);
             if (canRun == null)
             {
-                return "Failed to find file";
+                return "Failed to find file (bad)";
             }
 
             var allowed = Registry.CurrentUser.OpenSubKey(AllowedPath, true);
             if (allowed == null)
             {
-                return "Failed to open startup allowed key";
+                return "Failed to open StartupApproved key (bad)";
             }
 
             var canStart = allowed.GetValue(name) as byte[];
             if (canStart == null)
             {
-                return "File is missing from startup allowed";
+                return "File is missing from StartupApproved key (good)";
             }
 
             if (canStart.Length > 0 && canStart[0] == 2)
             {
-                return "File is not allowed to auto start";
+                return "File is not allowed to auto start (bad)";
             }
 
-            return "All is good";
+            return "All is good (good)";
         }
     }
 }

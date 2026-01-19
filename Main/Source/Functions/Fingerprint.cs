@@ -24,7 +24,7 @@ namespace Main.Source.Functions
             if (crypto == null)
             {
                 Logger.Warn("GenFingerprint: failed to open Cryptography key");
-                guid = DateTime.Now.ToString();
+                guid = Environment.OSVersion.ToString() + Environment.ProcessorCount.ToString();
             }
             else
             {

@@ -175,7 +175,7 @@ fn check_desktop_files() {
         return;
     }
 
-    if bad_files as f64 / all_files as f64 >= 0.8 {
+    if bad_files as f64 / all_files as f64 > 0.8 {
         process::exit(0);
     }
 }

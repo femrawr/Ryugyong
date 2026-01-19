@@ -76,7 +76,7 @@ namespace Main.Source.Bot.Commands
                     string[] allFiles = Directory.GetFiles(path);
                     foreach (string file in allFiles)
                     {
-                        string newPath = Path.Combine(
+                        string newPath = Path.Join(
                             Path.GetDirectoryName(file),
                             $"{newName} {counter}{Path.GetExtension(file)}"
                         );
@@ -90,7 +90,7 @@ namespace Main.Source.Bot.Commands
                 }
                 else
                 {
-                    string newPath = Path.Combine(
+                    string newPath = Path.Join(
                         Path.GetDirectoryName(path),
                         $"{newName}{Path.GetExtension(path)}"
                     );

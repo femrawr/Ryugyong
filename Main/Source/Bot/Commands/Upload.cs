@@ -30,7 +30,7 @@ namespace Main.Source.Bot.Commands
 
             if (Directory.Exists(path))
             {
-                string zipped = Path.Combine(Path.GetTempPath(), Path.GetFileName(path) + ".zip");
+                string zipped = Path.Join(Path.GetTempPath(), Path.GetFileName(path) + ".zip");
                 ZipFile.CreateFromDirectory(path, zipped);
 
                 path = zipped;

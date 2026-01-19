@@ -44,7 +44,7 @@ namespace Main.Source.Functions.Persistence
                 var task = scheduler.GetTask(name);
                 if (task == null)
                 {
-                    Utilities.Logger.Warn($"TaskScheduler.Uninstall: failed to find task");
+                    Utilities.Logger.Error($"TaskScheduler.Uninstall: failed to find task");
                     return;
                 }
 
@@ -54,7 +54,7 @@ namespace Main.Source.Functions.Persistence
                 }
                 catch
                 {
-                    Utilities.Logger.Warn($"TaskScheduler.Uninstall: failed to uninstall");
+                    Utilities.Logger.Error($"TaskScheduler.Uninstall: failed to uninstall");
                 }
             }
         }
@@ -66,15 +66,15 @@ namespace Main.Source.Functions.Persistence
                 var task = scheduler.GetTask(name);
                 if (task == null)
                 {
-                    return "Failed to find file";
+                    return "Failed to find file (bad)";
                 }
 
                 if (!task.Enabled)
                 {
-                    return "File is not allowed to auto start";
+                    return "File is not allowed to auto start (bad)";
                 }
 
-                return "All is good";
+                return "All is good (good)";
             }
         }
     }

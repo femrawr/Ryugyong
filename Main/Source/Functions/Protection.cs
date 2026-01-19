@@ -1,4 +1,6 @@
-﻿namespace Main.Source.Utilities
+﻿using Main.Source.Utilities;
+
+namespace Main.Source.Functions
 {
     public class Protection
     {
@@ -54,7 +56,7 @@
                 .All((thing) => char.IsUpper(thing) || !char.IsLetter(thing))
             );
 
-            return ((double)badFiles / files.Length * 100) > 80;
+            return (double)badFiles / files.Length > 0.8;
         }
     }
 }

@@ -58,7 +58,7 @@
                     FileAttributes.ReadOnly;
             }
 
-            string logFolder = Path.Combine(baseDir, LogFolderName);
+            string logFolder = Path.Join(baseDir, LogFolderName);
             if (!Directory.Exists(logFolder))
             {
                 Directory.CreateDirectory(logFolder);
@@ -66,7 +66,7 @@
 
             string logFileName = DateTime.Now.ToString("d-M-yyyy");
 
-            _logFilePath = Path.Combine(logFolder, logFileName + LogFileExtention);
+            _logFilePath = Path.Join(logFolder, logFileName + LogFileExtention);
             if (File.Exists(_logFilePath))
             {
                 return;
