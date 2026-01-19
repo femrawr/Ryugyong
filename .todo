@@ -1,5 +1,4 @@
 ryu:
-- wipe cmd
 - bypass arg for ss
 - no init in misc config ; for debugging
 - telegram bot support

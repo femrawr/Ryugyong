@@ -1,8 +1,6 @@
 # Ryugyong
-A super customizable and advanced remote administration tool made in C# controllable through a Disocrd bot.<br>
-Check the wiki for more info: WIP<br>
-
-> it might not be "super customizable" as of now, but thats how i envision it to be.
+A super customizable and advanced remote administration tool made in C# controllable through a Disocrd bot. <br>
+Check the wiki for more info: https://github.com/femrawr/Ryugyong/wiki <br>
 
 ## Disclaimer
 This tool is strictly a proof-of-concept and only for educational and security research purposes only and should not be used in any malicious or unethical way.
