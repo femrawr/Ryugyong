@@ -152,20 +152,34 @@ tabs.forEach((tab) => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const fetched = await fetch('settings.json');
-    const settings = await fetched.json();
+    const fetchedSettings = await fetch('settings.json');
+    const settings = await fetchedSettings.json();
 
     for (const [tab, item] of Object.entries(settings)) {
         const parent = document.getElementById(`${tab}-tab`);
-        if (!parent) {
-            return;
-        }
+
+        console.log(item);
 
         item.forEach((config) => {
             const box = createSetting(config);
             parent.appendChild(box);
-        })
+        });
     }
+
+    const fetchedCommands = await fetch('/get-commands');
+    const commands = await fetchedCommands.json();
+
+    const commandsParent = document.getElementById('m-commands-tab');
+
+    commands.forEach((config) => {
+        const box = createSetting({
+            ...config,
+            type: 'checkbox',
+            value: true
+        });
+
+        commandsParent.appendChild(box);
+    });
 
     document.querySelectorAll('input').forEach((input) => {
         input.setAttribute('spellcheck', 'false');
