@@ -152,8 +152,8 @@ tabs.forEach((tab) => {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const res = await fetch('settings.json');
-    const settings = await res.json();
+    const fetched = await fetch('settings.json');
+    const settings = await fetched.json();
 
     for (const [tab, item] of Object.entries(settings)) {
         const parent = document.getElementById(`${tab}-tab`);

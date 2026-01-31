@@ -37,7 +37,7 @@
 
             string logMsg = ConfigMisc.DEBUG_MODE
                 ? msg
-                : Encryption.Encrypt(msg);
+                : Crypto.Encrypt(msg);
 
             string logData = $"[{logDate}] [{level.ToString().ToUpper()}] {logMsg}" + Environment.NewLine;
 

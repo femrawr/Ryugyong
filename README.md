@@ -1,5 +1,11 @@
 # Ryugyong
 A super customizable and advanced remote administration tool made in C# controllable through a Disocrd bot. <br>
+
+## Features
+- [19 commands]()
+- [5 persistence methods]()
+- [1 control method]()
+
 Check the wiki for more info: https://github.com/femrawr/Ryugyong/wiki <br>
 
 ## Disclaimer

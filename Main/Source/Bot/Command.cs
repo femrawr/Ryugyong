@@ -26,6 +26,7 @@ namespace Main.Source.Bot
             commandList.Add(new Commands.Messagebox());
             commandList.Add(new Commands.Files());
             commandList.Add(new Commands.Debug());
+            commandList.Add(new Commands.Wipe());
         }
     }
 

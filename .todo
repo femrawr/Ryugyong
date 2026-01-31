@@ -13,9 +13,14 @@ ryu:
 - update cmd
 - prevent -delete flag from deleting ryu files
 - check if task scheduler persistence actually works
+- remove .lnk at the end of filePath in CreateShortcut if there is
+- passowrd/cookie recovery cmd
+- better info for wipe cmd
+
+dropper:
 - make dropper delete itself
 - timing check for dropper
-- remove .lnk at the end of filePath in CreateShortcut if there is
+- file verification for dropper
 
 builder:
 - features tab ; disable/enabled commands
@@ -25,5 +30,5 @@ builder:
 - make statically link dropper actually do it
 - allow more than 1 persistence method provided mutex is on
 
-dev tools:
-- log reader
+log reader:
+- make it

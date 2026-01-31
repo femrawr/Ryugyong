@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Main.Source.Utilities
 {
-    public class Encryption
+    public class Crypto
     {
         private const int SaltLen = 20;
         private const int NonceLen = 12;

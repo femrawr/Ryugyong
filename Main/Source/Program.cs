@@ -69,7 +69,7 @@ namespace Main.Source
 
             if (ConfigSetup.USE_NEW_DIR && ConfigSetup.NEW_DIR.Length > 0)
             {
-                newDir = Encryption.Decrypt(ConfigSetup.NEW_DIR)
+                newDir = Crypto.Decrypt(ConfigSetup.NEW_DIR)
                     .Replace("<USERPROFILE>", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
                     .Replace("<USER>", Environment.UserName)
                     .Replace("\\\\", "\\");
@@ -83,7 +83,7 @@ namespace Main.Source
 
             if (ConfigSetup.USE_NEW_NAME && ConfigSetup.NEW_NAME.Length > 0)
             {
-                newName = Encryption.Decrypt(ConfigSetup.NEW_NAME);
+                newName = Crypto.Decrypt(ConfigSetup.NEW_NAME);
             }
             else
             {
@@ -273,7 +273,7 @@ namespace Main.Source
 
             using var mutex = new Mutex(
                 true,
-                "Global\\" + Encryption.Decrypt(ConfigOptions.MUTEX_NAME),
+                "Global\\" + Crypto.Decrypt(ConfigOptions.MUTEX_NAME),
                 out canContinue
             );
 
