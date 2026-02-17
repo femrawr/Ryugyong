@@ -1,0 +1,35 @@
+ryu:
+- bypass arg for ss
+- no init in misc config ; for debugging
+- telegram bot support
+- also check if start allowed for start folder
+- create users cmd (noescape)
+- make desktop files jump around cmd (noescape)
+- backup tokens and stuff
+- finish debug cmd
+- finish file cmd
+- encrypt file util
+- host cmd (block/unblock sites)
+- update cmd
+- prevent -delete flag from deleting ryu files
+- check if task scheduler persistence actually works
+- remove .lnk at the end of filePath in CreateShortcut if there is
+- passowrd/cookie recovery cmd
+- better info for wipe cmd
+- no tracking code in bot if it was not provided
+
+dropper:
+- make dropper delete itself
+- timing check for dropper
+- file verification for dropper
+
+builder:
+- features tab ; disable/enabled commands
+- option to encrypt main
+- regex class or smth to bulk replace
+- use published trimmed if winforms stuff isnt used
+- make statically link dropper actually do it
+- allow more than 1 persistence method provided mutex is on
+
+log reader:
+- make it

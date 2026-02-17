@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>Ryugyong Builder</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <aside class="sidebar">
+                <div class="tab-container">
+                    <div class="tab-title">main</div>
+                    <button class="tab-button active" data-tab="m-bot">bot</button>
+                    <button class="tab-button" data-tab="m-options">options</button>
+                    <button class="tab-button" data-tab="m-setup">setup</button>
+                    <button class="tab-button" data-tab="m-protection">protection</button>
+                    <button class="tab-button" data-tab="m-commands">commands</button>
+                </div>
+
+                <div class="space" style="flex: 0.1;"></div>
+
+                <div class="tab-container">
+                    <div class="tab-title">dropper</div>
+                    <button class="tab-button" data-tab="d-options">options</button>
+                    <button class="tab-button" data-tab="d-protection">protection</button>
+                </div>
+
+                <div class="space" style="flex: 1;"></div>
+
+                <div class="actions">
+                    <div class="tab-title edit" style="text-transform: lowercase;">default</div>
+                    <button class="build-button" id="build">build</button>
+                    <button class="tab-button" data-tab="z-settings" style="text-align: center; background: none;">settings</button>
+                </div>
+            </aside>
+
+            <main class="main">
+                <div class="panel">
+                    <div class="content active" id="m-bot-tab"></div>
+                    <div class="content" id="m-options-tab"></div>
+                    <div class="content" id="m-setup-tab"></div>
+                    <div class="content" id="m-protection-tab"></div>
+                    <div class="content" id="m-commands-tab"></div>
+
+                    <div class="content" id="d-options-tab"></div>
+                    <div class="content" id="d-protection-tab"></div>
+
+                    <div class="content" id="z-settings-tab"></div>
+                </div>
+            </main>
+        </div>
+
+        <div class="notifs"></div>
+    </body>
+
+    <script>
+        TAG_NAME = 'ryu.tag';
+        CFG_NAME = 'ryu.cfg';
+    </script>
+
+    <script src="js/ui-settings.js"></script>
+    <script src="js/ui-tag.js"></script>
+    <script src="js/ui-notifs.js"></script>
+    <script src="js/main-saving.js"></script>
+    <script src="js/main-build.js"></script>
+</html>

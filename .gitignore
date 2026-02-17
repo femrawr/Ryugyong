@@ -1,0 +1,11 @@
+@Wiki/
+
+_build/
+
+node_modules/
+
+target/
+
+.vs/
+bin/
+obj/
